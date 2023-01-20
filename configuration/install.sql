@@ -6,7 +6,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2021-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2021-2023 Gustaf Mossakowski
  */
 
 
@@ -25,7 +25,7 @@ CREATE OR REPLACE VIEW `dates_digits` AS
 
 CREATE OR REPLACE VIEW `dates_numbers` AS
 	SELECT (((`ones`.`digit` + (`tens`.`digit` * 10)) + (`hundreds`.`digit` * 100)) + (`thousands`.`digit` * 1000)) AS `number`
-	FROM (((`dates_digits` `ones` JOIN `dates_digits` `tens`) JOIN `dates_digits` `hundreds`) JOIN `dates_digits` `thousands`)
+	FROM (((`dates_digits` `ones` JOIN `dates_digits` `tens`) JOIN `dates_digits` `hundreds`) JOIN `dates_digits` `thousands`);
 
 CREATE OR REPLACE VIEW `dates` AS
 	SELECT (CURDATE() - INTERVAL `dates_numbers`.`number` DAY) AS `date`

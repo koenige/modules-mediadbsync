@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2015-2017, 2021-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2015-2017, 2021-2023 Gustaf Mossakowski
  */
 
 
@@ -16,8 +16,6 @@
  * @todo diese Funktion wird noch nicht produktiv genutzt
  */
 function mod_mediadbsync_get_organisations($vars) {
-	global $zz_setting;
-
 	$sql = 'SELECT contacts.contact_id AS `objects[foreign_key]`
 			, identifier AS `objects[identifier]`
 			, contact AS `objects[title][deu]`

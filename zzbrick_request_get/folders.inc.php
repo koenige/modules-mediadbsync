@@ -34,6 +34,7 @@ function mod_mediadbsync_get_folders($vars) {
 			, IF((SUBSTRING_INDEX(categories.path, "/", -1) = "mannschaft"), 1, 0) AS teams
 			, (SELECT COUNT(*) FROM participations WHERE participations.event_id = events.event_id AND usergroup_id IN (%s)) AS team
 			, series.parameters AS series_parameters
+			, CONCAT(contact_abbr, "/", series_events.identifier) AS series_identifier
 		FROM events
 		LEFT JOIN categories
 			ON events.event_category_id = categories.category_id
@@ -41,8 +42,12 @@ function mod_mediadbsync_get_folders($vars) {
 			ON events.series_category_id = series.category_id
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts USING (contact_id)
+		LEFT JOIN events series_events
+			ON series_events.series_category_id = series.main_category_id
+			AND (IFNULL(series_events.event_year, YEAR(IFNULL(series_events.date_begin, series_events.date_end)))
+				= IFNULL(events.event_year, YEAR(IFNULL(events.date_begin, events.date_end))))
 		WHERE categories.main_category_id = %d
-		AND (NOT ISNULL(date_begin) OR NOT ISNULL(date_end))
+		AND (NOT ISNULL(events.date_begin) OR NOT ISNULL(events.date_end))
 	';
 	$sql = sprintf($sql,
         implode(',', $team_ids),
@@ -50,6 +55,7 @@ function mod_mediadbsync_get_folders($vars) {
 	);
 	$events = wrap_db_fetch($sql, 'objects[foreign_key]');
 
+	$data = [];
 	foreach ($events as $event_id => $values) {
 		// 1 Photos			film	immer
 		$index = $values['objects[foreign_key]'].'-1';
@@ -65,7 +71,13 @@ function mod_mediadbsync_get_folders($vars) {
 			$i = 0;
 			if (array_key_exists('quicklinks', $values['series_parameters'])) {
 				foreach ($values['series_parameters']['quicklinks'] as $quicklink) {
-					$data[$index]['quicklinks['.$i.'][link_object]'] = $values['objects[path]'].'/'.$quicklink;
+					if (str_starts_with($quicklink, '[series]/')) {
+						if (!$values['series_identifier']) continue;
+						$path = str_replace('[series]', $values['series_identifier'], $quicklink);
+					} else {
+						$path = $values['objects[path]'].'/'.$quicklink;
+					}
+					$data[$index]['quicklinks['.$i.'][link_object]'] = $path;
 					$data[$index]['quicklinks['.$i.'][foreign_key]'] = $index.'-'.($i + 1);
 					$i++;
 				}

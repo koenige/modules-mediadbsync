@@ -33,9 +33,12 @@ function mod_mediadbsync_get_folders($vars) {
 			, IF((SUBSTRING_INDEX(categories.path, "/", -1) = "einzel" OR SUBSTRING_INDEX(categories.path, "/", -1) = "mannschaft"), 1, 0) AS spieler
 			, IF((SUBSTRING_INDEX(categories.path, "/", -1) = "mannschaft"), 1, 0) AS teams
 			, (SELECT COUNT(*) FROM participations WHERE participations.event_id = events.event_id AND usergroup_id IN (%s)) AS team
+			, series.parameters AS series_parameters
 		FROM events
 		LEFT JOIN categories
 			ON events.event_category_id = categories.category_id
+		LEFT JOIN categories series
+			ON events.series_category_id = series.category_id
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts USING (contact_id)
 		WHERE categories.main_category_id = %d
@@ -57,6 +60,24 @@ function mod_mediadbsync_get_folders($vars) {
 			'objects[title][deu]' => 'Photos',
 			'objects[category]' => 'folder'
 		];
+		if ($values['series_parameters']) {
+			parse_str($values['series_parameters'], $values['series_parameters']);
+			$i = 0;
+			if (array_key_exists('quicklinks', $values['series_parameters'])) {
+				foreach ($values['series_parameters']['quicklinks'] as $quicklink) {
+					$data[$index]['quicklinks['.$i.'][link_object]'] = $values['objects[path]'].'/'.$quicklink;
+					$data[$index]['quicklinks['.$i.'][foreign_key]'] = $index.'-'.($i + 1);
+					$i++;
+				}
+			}
+			// @todo add support for quicklinks_series
+			if ($i) {
+				$data[$index]['folder_settings[folder_property]'] = 'quicklinks';
+				$data[$index]['folder_settings[setting]'] = 1;
+				$data[$index]['folder_settings[inheritance]'] = 1;
+				$data[$index]['folder_settings[foreign_key]'] = $index.'-1';
+			}
+		}
 		// 2 Materialien	folder	immer
 		$index = $values['objects[foreign_key]'].'-2';
 		$data[$index] = [
@@ -111,7 +132,7 @@ function mod_mediadbsync_get_folders($vars) {
 			];
 		}
 		// 7 immer  
-		if ($values['teams']) {
+		if ($values['teams'] OR $values['spieler']) {
 			$index = $values['objects[foreign_key]'].'-7';
 			$data[$index] = [
 				'objects[foreign_key]' => $index,
@@ -128,6 +149,16 @@ function mod_mediadbsync_get_folders($vars) {
 				'access_rights[show_access]' => 'no',
 				'access_rights[foreign_key]' => $index.'-1'
 			];
+			if (!empty($values['series_parameters']['impressionen'])) {
+				$index = $values['objects[foreign_key]'].'-8';
+				$data[$index] = [
+					'objects[foreign_key]' => $index,
+					'objects[path]' => $values['objects[path]'].'/Website',
+					'objects[identifier]' => 'Impressionen',
+					'objects[title][deu]' => 'Impressionen',
+					'objects[category]' => 'publication',
+				];
+			}
 		}
 	}
 	return $data;

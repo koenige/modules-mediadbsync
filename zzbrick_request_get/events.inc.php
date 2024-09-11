@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014, 2017, 2019-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2014, 2017, 2019-2022, 2024 Gustaf Mossakowski
  */
 
 
@@ -32,17 +32,20 @@ function mod_mediadbsync_get_events($vars) {
 			, CONCAT(events.event_id, "-", 1) AS `times[1][foreign_key]`
 
 		FROM events
+		LEFT JOIN events_contacts events_places
+			ON events.event_id = events_places.event_id
+			AND events_places.role_category_id = /*_ID categories roles/location _*/
+			AND events_places.sequence = 1
 		LEFT JOIN addresses
-			ON addresses.contact_id = events.place_contact_id
+			ON addresses.contact_id = events_places.contact_id
 		LEFT JOIN categories
 			ON events.event_category_id = categories.category_id
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts
 			ON websites.contact_id = contacts.contact_id
-		WHERE categories.main_category_id = %d
+		WHERE categories.main_category_id = /*_ID categories events _*/
 		AND (NOT ISNULL(date_begin) OR NOT ISNULL(date_end))
 	';
-	$sql = sprintf($sql, wrap_category_id('events'));
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]');
 	return $data;
 }

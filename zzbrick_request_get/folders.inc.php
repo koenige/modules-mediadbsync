@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014, 2016-2017, 2019-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2014, 2016-2017, 2019-2022, 2024 Gustaf Mossakowski
  */
 
 
@@ -46,13 +46,10 @@ function mod_mediadbsync_get_folders($vars) {
 			ON series_events.series_category_id = series.main_category_id
 			AND (IFNULL(series_events.event_year, YEAR(IFNULL(series_events.date_begin, series_events.date_end)))
 				= IFNULL(events.event_year, YEAR(IFNULL(events.date_begin, events.date_end))))
-		WHERE categories.main_category_id = %d
+		WHERE categories.main_category_id = /*_ID categories events _*/
 		AND (NOT ISNULL(events.date_begin) OR NOT ISNULL(events.date_end))
 	';
-	$sql = sprintf($sql,
-        implode(',', $team_ids),
-        wrap_category_id('events')
-	);
+	$sql = sprintf($sql, implode(',', $team_ids));
 	$events = wrap_db_fetch($sql, 'objects[foreign_key]');
 
 	$data = [];

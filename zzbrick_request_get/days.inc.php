@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014-2017, 2019-2023 Gustaf Mossakowski
+ * @copyright Copyright © 2014-2017, 2019-2024 Gustaf Mossakowski
  */
 
 
@@ -44,7 +44,7 @@ function mod_mediadbsync_get_days($vars) {
 			AND dates.date <= DATE_ADD(events.date_end, INTERVAL 1 DAY)
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts USING (contact_id)
-		WHERE categories.main_category_id = %d
+		WHERE categories.main_category_id = /*_ID categories events _*/
 		AND NOT ISNULL(date_begin)
 		AND takes_place = "yes"
 		AND DAY(date_begin) != 0
@@ -52,7 +52,6 @@ function mod_mediadbsync_get_days($vars) {
 		AND NOT ISNULL(dates.date)
 		ORDER BY events.date_begin, dates.date, events.event_id
 	';
-	$sql = sprintf($sql, wrap_category_id('events'));
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]');
 	return $data;
 }

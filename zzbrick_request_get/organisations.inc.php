@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2015-2017, 2021-2023 Gustaf Mossakowski
+ * @copyright Copyright © 2015-2017, 2021-2024 Gustaf Mossakowski
  */
 
 
@@ -24,7 +24,7 @@ function mod_mediadbsync_get_organisations($vars) {
 
 			, (SELECT identification FROM contactdetails
 				WHERE contactdetails.contact_id = contacts.contact_id
-				AND provider_category_id = %d
+				AND provider_category_id = /*_ID categories provider/website _*/
 				LIMIT 1
 			)  AS `uris[0][uri]`
 			, "/uri/web" AS `uris[0][uri_property]`
@@ -32,7 +32,6 @@ function mod_mediadbsync_get_organisations($vars) {
 
 		FROM contacts
 	';
-	$sql = sprintf($sql, wrap_category_id('provider/website'));
 	// @todo add coordinates
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]');
 	foreach ($data as $id => $object) {

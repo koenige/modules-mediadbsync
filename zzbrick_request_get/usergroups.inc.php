@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2016-2017, 2019-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2016-2017, 2019-2022, 2024 Gustaf Mossakowski
  */
 
 
@@ -53,10 +53,9 @@ function mod_mediadbsync_get_usergroups_orga() {
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts organisationen
 			ON websites.contact_id = organisationen.contact_id
-		WHERE usergroups.usergroup_category_id = %d
+		WHERE usergroups.usergroup_category_id = /*_ID categories gruppen/organisatoren _*/
 		AND (NOT ISNULL(events.date_begin) OR NOT ISNULL(events.date_end))
 		ORDER BY event_id, usergroup_id, participation_id';
-	$sql = sprintf($sql, wrap_category_id('gruppen/organisatoren'));
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]', 'numeric');
 	return $data;
 }
@@ -78,14 +77,13 @@ function mod_mediadbsync_get_usergroups_gremien() {
 		FROM usergroups
 		JOIN participations USING (usergroup_id)
 		JOIN contacts USING (contact_id)
-		WHERE usergroups.usergroup_category_id = %d
+		WHERE usergroups.usergroup_category_id = /*_ID categories gruppen/gremien _*/
 		AND (ISNULL(participations.date_end)
 			OR DATE_ADD(participations.date_end
 			, INTERVAL IFNULL(SUBSTRING_INDEX(SUBSTRING_INDEX(usergroups.parameters, "transition_days=", -1), "&", 1), 0) DAY
 			) > CURDATE()
 		)
 		ORDER BY usergroup_id, participation_id';
-	$sql = sprintf($sql, wrap_category_id('gruppen/gremien'));
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]', 'numeric');
 	return $data;
 }
@@ -139,10 +137,10 @@ function mod_mediadbsync_get_usergroups_teilnehmer($key) {
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts organisationen
 			ON websites.contact_id = organisationen.contact_id
-		WHERE usergroups.usergroup_id = %d
+		WHERE usergroups.usergroup_id = /*_ID usergroups %s _*/
 		AND (NOT ISNULL(events.date_begin) OR NOT ISNULL(events.date_end))
 		ORDER BY event_id, usergroup_id, participation_id';
-	$sql = sprintf($sql, wrap_id('usergroups', $key));
+	$sql = sprintf($sql, $key);
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]', 'numeric');
 	return $data;
 }

@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014, 2016-2017, 2019-2022, 2024 Gustaf Mossakowski
+ * @copyright Copyright © 2014, 2016-2017, 2019-2022, 2024-2025 Gustaf Mossakowski
  */
 
 
@@ -61,7 +61,7 @@ function mod_mediadbsync_get_folders($vars) {
 			'objects[path]' => $values['objects[path]'],
 			'objects[identifier]' => 'Photos',
 			'objects[title][deu]' => 'Photos',
-			'objects[category]' => 'folder'
+			'objects[class_name]' => 'folder'
 		];
 		if ($values['series_parameters']) {
 			parse_str($values['series_parameters'], $values['series_parameters']);
@@ -94,7 +94,7 @@ function mod_mediadbsync_get_folders($vars) {
 			'objects[path]' => $values['objects[path]'],
 			'objects[identifier]' => 'Materialien',
 			'objects[title][deu]' => 'Materialien',
-			'objects[category]' => 'folder',
+			'objects[class_name]' => 'folder',
 			'folder_settings[folder_property]' => 'quicklinks',
 			'folder_settings[setting]' => 1,
 			'folder_settings[inheritance]' => 1,
@@ -111,7 +111,7 @@ function mod_mediadbsync_get_folders($vars) {
 				'objects[path]' => $values['objects[path]'],
 				'objects[identifier]' => 'Team',
 				'objects[title][deu]' => 'Team',
-				'objects[category]' => 'list',
+				'objects[class_name]' => 'list',
 				'folder_settings[folder_property]' => 'exclude_from_search',
 				'folder_settings[setting]' => 1,
 				'folder_settings[inheritance]' => 1,
@@ -126,7 +126,7 @@ function mod_mediadbsync_get_folders($vars) {
 				'objects[path]' => $values['objects[path]'],
 				'objects[identifier]' => 'Spieler',
 				'objects[title][deu]' => 'Spieler',
-				'objects[category]' => 'list'
+				'objects[class_name]' => 'list'
 			];
 		}
 		// 6 Teams 			list	if Mannschaftsturnier 
@@ -137,7 +137,7 @@ function mod_mediadbsync_get_folders($vars) {
 				'objects[path]' => $values['objects[path]'],
 				'objects[identifier]' => 'Teams',
 				'objects[title][deu]' => 'Teams',
-				'objects[category]' => 'list'
+				'objects[class_name]' => 'list'
 			];
 		}
 		// 7 immer  
@@ -148,7 +148,7 @@ function mod_mediadbsync_get_folders($vars) {
 				'objects[path]' => $values['objects[path]'],
 				'objects[identifier]' => 'Website',
 				'objects[title][deu]' => 'Website',
-				'objects[category]' => 'publication',
+				'objects[class_name]' => 'publication',
 				'folder_settings[folder_property]' => 'inherit_public_access',
 				'folder_settings[setting]' => 1,
 				'folder_settings[inheritance]' => 1,
@@ -165,7 +165,7 @@ function mod_mediadbsync_get_folders($vars) {
 					'objects[path]' => $values['objects[path]'].'/Website',
 					'objects[identifier]' => 'Impressionen',
 					'objects[title][deu]' => 'Impressionen',
-					'objects[category]' => 'publication',
+					'objects[class_name]' => 'publication',
 				];
 			}
 		}

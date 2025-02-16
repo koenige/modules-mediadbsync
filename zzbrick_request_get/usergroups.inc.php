@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2016-2017, 2019-2022, 2024 Gustaf Mossakowski
+ * @copyright Copyright © 2016-2017, 2019-2022, 2024-2025 Gustaf Mossakowski
  */
 
 
@@ -32,7 +32,7 @@ function mod_mediadbsync_get_usergroups_orga() {
 			, usergroups.identifier AS `objects[identifier]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier, "/Team") AS `objects[path]`
 			, usergroup AS `objects[title][deu]`
-			, "group" AS `objects[category]`
+			, "group" AS `objects[class_name]`
 
 			, participation_id AS `objectrelations[foreign_key]`
 			, "member" AS `objectrelations[relation_type_property]`
@@ -66,7 +66,7 @@ function mod_mediadbsync_get_usergroups_gremien() {
 			, "Gruppen" AS `objects[path]`
 			, usergroups.identifier AS `objects[title][-id]`
 			, usergroup AS `objects[title][deu]`
-			, "group" AS `objects[category]`
+			, "group" AS `objects[class_name]`
 
 			, participation_id AS `objectrelations[foreign_key]`
 			, "member" AS `objectrelations[relation_type_property]`
@@ -93,7 +93,7 @@ function mod_mediadbsync_get_usergroups_teilnehmer($key) {
 			, IF(usergroup = "Referent", "Referenten", usergroup) AS `objects[identifier]`
 			, CONCAT(organisationen.contact_abbr, "/", events.identifier) AS `objects[path]`
 			, IF(usergroup = "Referent", "Referenten", usergroup) AS `objects[title][deu]`
-			, "group" AS `objects[category]`
+			, "group" AS `objects[class_name]`
 
 			, participation_id AS `objectrelations[foreign_key]`
 			, "member" AS `objectrelations[relation_type_property]`

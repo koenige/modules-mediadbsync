@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014-2015, 2017, 2020-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2014-2015, 2017, 2020-2022, 2025 Gustaf Mossakowski
  */
 
 
@@ -16,7 +16,7 @@ function mod_mediadbsync_get_years($vars) {
 	$sql = 'SELECT DISTINCT CONCAT(IFNULL(event_year, YEAR(IFNULL(date_begin, date_end))), "-", website_id) AS `objects[foreign_key]`
 			, IFNULL(event_year, YEAR(IFNULL(date_begin, date_end))) AS `objects[identifier]`
 			, IFNULL(event_year, YEAR(IFNULL(date_begin, date_end))) AS `objects[title][---]`
-			, "list" AS `objects[category]`
+			, "list" AS `objects[class_name]`
 			, contact_abbr AS `objects[path]`
 
 			, "list_display_table" AS `folder_settings[folder_property]`

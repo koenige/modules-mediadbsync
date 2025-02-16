@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2016-2017, 2019-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2016-2017, 2019-2022, 2025 Gustaf Mossakowski
  */
 
 
@@ -17,7 +17,7 @@ function mod_mediadbsync_get_teams($vars) {
 			, SUBSTRING_INDEX(teams.identifier, "/", -1) AS `objects[identifier]`
 			, CONCAT(contact_abbr, "/", events.identifier, "/Teams") AS `objects[path]`
 			, CONCAT(teams.team, IFNULL(CONCAT(" ", team_no), "")) AS `objects[title][deu]`
-			, "group" AS `objects[category]`
+			, "group" AS `objects[class_name]`
 		FROM teams
 		LEFT JOIN events USING (event_id)
 		LEFT JOIN websites USING (website_id)

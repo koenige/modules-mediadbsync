@@ -8,13 +8,13 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014-2017, 2019-2024 Gustaf Mossakowski
+ * @copyright Copyright © 2014-2017, 2019-2025 Gustaf Mossakowski
  */
 
 
 function mod_mediadbsync_get_days($vars) {
 	$sql = 'SELECT CONCAT(events.event_id, "-", dates.date) AS `objects[foreign_key]`
-			, "film" AS `objects[category]`
+			, "film" AS `objects[class_name]`
 			, CONCAT(contact_abbr, "/", events.identifier, "/Photos") AS `objects[path]`
 			, IF(dates.date < events.date_begin, "00",
 				IF(dates.date > events.date_end, "99",

@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014-2015, 2019, 2021-2022 Gustaf Mossakowski
+ * @copyright Copyright © 2014-2015, 2019, 2021-2022, 2025 Gustaf Mossakowski
  */
 
 
@@ -16,8 +16,8 @@ function mod_mediadbsync_get_persons($vars) {
 	$sql = 'SELECT DISTINCT person_id AS `objects[foreign_key]`
 			, identifier AS `objects[identifier]`
 			, "Personen" AS `objects[path]`
-			, "person" AS `objects[category]`
-			, IF(sex = "female", "woman", IF(sex = "male", "man", NULL)) AS `objects[subcategory]`
+			, "person" AS `objects[class_name]`
+			, IF(sex = "female", "woman", IF(sex = "male", "man", NULL)) AS `objects[sub_class_name]`
 			, contact AS `objects[title][---]`
 			, identifier AS `objects[title][-id]`
 		FROM persons

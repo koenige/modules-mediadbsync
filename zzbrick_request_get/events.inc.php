@@ -8,7 +8,7 @@
  * https://www.zugzwang.org/modules/mediadbsync
  *
  * @author Gustaf Mossakowski <gustaf@koenige.org>
- * @copyright Copyright © 2014, 2017, 2019-2022, 2024 Gustaf Mossakowski
+ * @copyright Copyright © 2014, 2017, 2019-2022, 2024-2025 Gustaf Mossakowski
  */
 
 
@@ -17,7 +17,7 @@ function mod_mediadbsync_get_events($vars) {
 			, SUBSTRING_INDEX(events.identifier, "/", -1) AS `objects[identifier]`
 			, SUBSTRING_INDEX(events.identifier, "/", -1) AS `objects[title][-id]`
 			, events.event AS `objects[title][deu]`
-			, "event" AS `objects[category]`
+			, "event" AS `objects[class_name]`
 			, CONCAT(contact_abbr, "/", IFNULL(event_year, YEAR(IFNULL(date_begin, date_end)))) AS `objects[path]`
 			, CONCAT(IFNULL(CONCAT(events.description, "\n\n"), "")
 				, IFNULL(CONCAT(" in ", place), "")

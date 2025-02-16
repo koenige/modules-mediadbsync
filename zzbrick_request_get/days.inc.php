@@ -18,11 +18,11 @@ function mod_mediadbsync_get_days($vars) {
 			, CONCAT(contact_abbr, "/", events.identifier, "/Photos") AS `objects[path]`
 			, IF(dates.date < events.date_begin, "00",
 				IF(dates.date > events.date_end, "99",
-				DATE_FORMAT(dates.date, "%%m-%%d"))
+				DATE_FORMAT(dates.date, "%m-%d"))
 			) AS `objects[title][-id]`
 			, IF(dates.date < events.date_begin, "00",
 				IF(dates.date > events.date_end, "99",
-				DATE_FORMAT(dates.date, "%%m-%%d"))
+				DATE_FORMAT(dates.date, "%m-%d"))
 			) AS `objects[identifier]`
 			, IF(dates.date < events.date_begin, "vorab",
 				IF(dates.date > events.date_end, "danach",
@@ -34,7 +34,7 @@ function mod_mediadbsync_get_days($vars) {
 				WHEN 4 THEN "Fr"
 				WHEN 5 THEN "Sa"
 				WHEN 6 THEN "So"
-				END, " ", DATE_FORMAT(dates.date, "%%d.%%m."))
+				END, " ", DATE_FORMAT(dates.date, "%d.%m."))
 			)) AS `objects[title][deu]`
 		FROM events
 		LEFT JOIN categories

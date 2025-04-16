@@ -141,7 +141,7 @@ function mod_mediadbsync_get_folders($vars) {
 			];
 		}
 		// 7 immer  
-		if ($values['teams'] OR $values['spieler']) {
+		if ($values['teams'] OR $values['spieler'] OR !empty($values['series_parameters']['mediadbsync_website'])) {
 			$index = $values['objects[foreign_key]'].'-7';
 			$data[$index] = [
 				'objects[foreign_key]' => $index,

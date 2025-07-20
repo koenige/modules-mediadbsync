@@ -36,8 +36,11 @@ function mod_mediadbsync_get_folders($vars) {
 			, series.parameters AS series_parameters
 			, CONCAT(contact_abbr, "/", series_events.identifier) AS series_identifier
 		FROM events
+		LEFT JOIN events_categories
+			ON events_categories.event_id = events.event_id
+			AND events_categories.type_category_id = /*_ID categories events _*/
 		LEFT JOIN categories
-			ON events.event_category_id = categories.category_id
+			ON events_categories.category_id = categories.category_id
 		LEFT JOIN categories series
 			ON events.series_category_id = series.category_id
 		LEFT JOIN websites USING (website_id)
@@ -46,7 +49,7 @@ function mod_mediadbsync_get_folders($vars) {
 			ON series_events.series_category_id = series.main_category_id
 			AND (IFNULL(series_events.event_year, YEAR(IFNULL(series_events.date_begin, series_events.date_end)))
 				= IFNULL(events.event_year, YEAR(IFNULL(events.date_begin, events.date_end))))
-		WHERE categories.main_category_id = /*_ID categories events _*/
+		WHERE events.event_category_id = /*_ID categories event/event _*/
 		AND (NOT ISNULL(events.date_begin) OR NOT ISNULL(events.date_end))
 	';
 	$sql = sprintf($sql, implode(',', $team_ids));

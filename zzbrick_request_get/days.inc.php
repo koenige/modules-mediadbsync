@@ -37,14 +37,12 @@ function mod_mediadbsync_get_days($vars) {
 				END, " ", DATE_FORMAT(dates.date, "%d.%m."))
 			)) AS `objects[title][deu]`
 		FROM events
-		LEFT JOIN categories
-			ON events.event_category_id = categories.category_id
 		LEFT JOIN dates
 			ON dates.date >= DATE_SUB(events.date_begin, INTERVAL 1 DAY)
 			AND dates.date <= DATE_ADD(events.date_end, INTERVAL 1 DAY)
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts USING (contact_id)
-		WHERE categories.main_category_id = /*_ID categories events _*/
+		WHERE events.event_category_id = /*_ID categories event/event _*/
 		AND NOT ISNULL(date_begin)
 		AND takes_place = "yes"
 		AND DAY(date_begin) != 0

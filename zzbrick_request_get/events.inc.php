@@ -38,12 +38,10 @@ function mod_mediadbsync_get_events($vars) {
 			AND events_places.sequence = 1
 		LEFT JOIN addresses
 			ON addresses.contact_id = events_places.contact_id
-		LEFT JOIN categories
-			ON events.event_category_id = categories.category_id
 		LEFT JOIN websites USING (website_id)
 		LEFT JOIN contacts
 			ON websites.contact_id = contacts.contact_id
-		WHERE categories.main_category_id = /*_ID categories events _*/
+		WHERE events.event_category_id = /*_ID categories event/event _*/
 		AND (NOT ISNULL(date_begin) OR NOT ISNULL(date_end))
 	';
 	$data = wrap_db_fetch($sql, 'objects[foreign_key]');

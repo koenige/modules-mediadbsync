@@ -30,8 +30,8 @@ function mod_mediadbsync_get_folders($vars) {
 
 	$sql = 'SELECT events.event_id AS `objects[foreign_key]`
 			, CONCAT(contact_abbr, "/", events.identifier) AS `objects[path]`
-			, IF((SUBSTRING_INDEX(categories.path, "/", -1) = "einzel" OR SUBSTRING_INDEX(categories.path, "/", -1) = "mannschaft"), 1, NULL) AS spieler
-			, IF((SUBSTRING_INDEX(categories.path, "/", -1) = "mannschaft"), 1, NULL) AS teams
+			, IF(categories.parameters LIKE "%%&tournament=1%%", 1, NULL) AS spieler
+			, IF(categories.parameters LIKE "%%&tournaments_type_team=1%%", 1, NULL) AS teams
 			, (SELECT COUNT(*) FROM participations WHERE participations.event_id = events.event_id AND usergroup_id IN (%s)) AS team
 			, series.parameters AS series_parameters
 			, CONCAT(contact_abbr, "/", series_events.identifier) AS series_identifier
